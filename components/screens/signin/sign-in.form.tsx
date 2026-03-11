@@ -48,7 +48,7 @@ export default function SignInForm() {
         <View style={styles.container}>
             <View style={styles.formContainer}>
 
-                {/* Username or Email Section */}
+                
                 <Text style={styles.label}>Username or Email</Text>
                 <View style={styles.inputContainer}>
                     <Ionicons name="person-outline" size={24} color="#666" style={styles.inputIcon} />
@@ -69,7 +69,7 @@ export default function SignInForm() {
                 </View>
                 {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
 
-                {/* Password Section */}
+                
                 <Text style={styles.label}>Password</Text>
                 <View style={styles.inputContainer}>
                     <MaterialIcons name="lock-outline" size={24} color="#666" style={styles.inputIcon} />
@@ -111,7 +111,7 @@ export default function SignInForm() {
                     <Ionicons name="arrow-forward" size={24} color="#FFF" />
                 </TouchableOpacity>
 
-                {/* Sign Up Link */}
+                
                 <View style={styles.signUpContainer}>
                     <Text style={styles.signUpText}>{`Don't have an account?`} </Text>
                     <TouchableOpacity onPress={() => router.push("/signup")}>

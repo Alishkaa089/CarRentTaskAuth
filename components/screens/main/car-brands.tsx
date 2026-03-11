@@ -8,6 +8,7 @@ import { router } from "expo-router";
 import { CarModel } from "@/types/car-model.types";
 import { useCarState } from "@/store/use-car.state";
 import { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function CarBrands() {
     const { colorScheme } = useTheme();
@@ -43,14 +44,21 @@ export default function CarBrands() {
             </View>
             <FlatList
                 data={getCarBySlug()}
+                keyExtractor={(item) => item.id}
                 renderItem={({ item }) =>
-                    <TouchableOpacity style={styles.item}>
-                        <Image source={{ uri: item.image }} style={styles.brandImage} />
-                        <Text style={styles.brandName}>{item.brand}</Text>
-                        <Text style={styles.modelName}>{item.model}</Text>
+                    <TouchableOpacity 
+                        style={styles.item}
+                        onPress={() => router.push(`/car-details/${item.id}`)}
+                    >
+                        <Image source={{ uri: item.image }} style={styles.brandImage} contentFit="cover" />
+                        <Text style={styles.brandName} numberOfLines={1}>white {item.brand} {item.model} - Elite State</Text>
                         <View style={styles.modelInfo}>
-                            <Text style={styles.modelYear}>{item.year}</Text>
-                            <Text style={styles.modelPrice}>{item.pricePerDay}/day</Text>
+                            <View style={styles.ratingContainer}>
+                                <Ionicons name="star" size={14} color="#FFB800" />
+                                <Text style={styles.ratingText}>4.8</Text>
+                                <Text style={styles.reviewText}>[140+ Review]</Text>
+                            </View>
+                            <Text style={styles.modelPrice}>${item.pricePerDay}<Text style={styles.dayText}> /day</Text></Text>
                         </View>
                     </TouchableOpacity>}
                 horizontal
@@ -63,50 +71,63 @@ export default function CarBrands() {
 
 const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: theme === "dark" ? layoutTheme.colors.primary : layoutTheme.colors.white,
+        marginTop: 24,
     },
     list: {
-        gap: 10,
+        gap: 16,
         marginTop: 16,
     },
     item: {
-        width: 304,
-        height: 234,
+        width: 280,
         backgroundColor: theme === "dark" ? layoutTheme.colors.background.darkGray : layoutTheme.colors.background.gray,
-        borderRadius: 10,
-        padding: 10,
+        borderRadius: 16,
+        padding: 12,
+        borderWidth: 1,
+        borderColor: theme === "dark" ? "#333" : "#E5E5E5",
     },
     brandImage: {
         width: "100%",
-        height: 144,
-        borderRadius: 10,
+        height: 140,
+        borderRadius: 12,
         backgroundColor: layoutTheme.colors.background.white,
+        marginBottom: 12,
     },
     modelInfo: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        marginTop: 8,
     },
     brandName: {
-        fontFamily: layoutTheme.fonts.inter.medium,
-        fontSize: 18,
+        fontFamily: layoutTheme.fonts.inter.bold,
+        fontSize: 16,
+        color: theme === "dark" ? layoutTheme.colors.text.white : layoutTheme.colors.text.primary,
+        marginBottom: 4,
+    },
+    ratingContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 2,
+    },
+    ratingText: {
+        fontFamily: layoutTheme.fonts.inter.bold,
+        fontSize: 12,
         color: theme === "dark" ? layoutTheme.colors.text.white : layoutTheme.colors.text.primary,
     },
-    modelName: {
+    reviewText: {
         fontFamily: layoutTheme.fonts.inter.regular,
-        fontSize: 14,
-        color: theme === "dark" ? layoutTheme.colors.text.white : layoutTheme.colors.text.primary,
-    },
-    modelYear: {
-        fontFamily: layoutTheme.fonts.inter.regular,
-        fontSize: 14,
-        color: theme === "dark" ? layoutTheme.colors.text.white : layoutTheme.colors.text.primary,
+        fontSize: 12,
+        color: "#888",
     },
     modelPrice: {
         fontFamily: layoutTheme.fonts.inter.bold,
         fontSize: 14,
         color: theme === "dark" ? layoutTheme.colors.text.white : layoutTheme.colors.text.primary,
+    },
+    dayText: {
+        fontFamily: layoutTheme.fonts.inter.regular,
+        fontSize: 12,
+        color: "#888",
     },
     header: {
         flexDirection: "row",
@@ -115,11 +136,12 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     },
     title: {
         fontFamily: layoutTheme.fonts.inter.bold,
-        fontSize: 22,
+        fontSize: 18,
         color: theme === "dark" ? layoutTheme.colors.text.white : layoutTheme.colors.text.primary,
     },
     viewAllButtonText: {
-        fontFamily: layoutTheme.fonts.inter.regular,
+        fontFamily: layoutTheme.fonts.inter.medium,
         color: layoutTheme.colors.text.secondary,
+        fontSize: 14,
     },
 })

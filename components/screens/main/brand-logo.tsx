@@ -17,21 +17,22 @@ export default function BrandLogo() {
     const handleBrandPress = (slug: string) => {
         setBrand([slug])
     }
-    console.log(brand);
-
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>Top Brands</Text>
-                <TouchableOpacity style={styles.viewAllButton} onPress={() => router.push("/car-list")}>
+                <TouchableOpacity style={styles.viewAllButton} onPress={() => router.push("/brand-list")}>
                     <Text style={styles.viewAllButtonText}>See All</Text>
                 </TouchableOpacity>
             </View>
             <FlatList
                 data={carLogos}
                 renderItem={({ item }) =>
-                    <TouchableOpacity style={styles.item} onPress={() => handleBrandPress(item.slug)}>
+                    <TouchableOpacity 
+                        style={[styles.item, brand.includes(item.slug) && styles.activeItem]} 
+                        onPress={() => handleBrandPress(item.slug)}
+                    >
                         <Image source={{ uri: item.image.source }} style={styles.brandImage} />
                     </TouchableOpacity>}
                 horizontal
@@ -44,36 +45,29 @@ export default function BrandLogo() {
 
 const getStyles = (theme: ThemeType) => StyleSheet.create({
     container: {
-        flex: 1,
-        paddingHorizontal: 10,
-        marginTop: 18,
+        marginTop: 20,
     },
     list: {
-        gap: 10,
+        gap: 12,
         marginTop: 16,
     },
     item: {
-        width: 100,
-        height: 100,
+        width: 70,
+        height: 70,
         borderWidth: 1,
-        borderColor: "gray",
-        borderRadius: 10,
+        borderColor: theme === "dark" ? "#333" : "#E5E5E5",
+        backgroundColor: theme === "dark" ? layoutTheme.colors.background.darkGray : layoutTheme.colors.white,
+        borderRadius: 16,
         justifyContent: "center",
         alignItems: "center",
-        boxShadow: "0 0 10px 0px rgba(0, 0, 0, 0.3)",
-        shadowColor: "rgba(0, 0, 0, 0.3)",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-
+    },
+    activeItem: {
+        borderColor: layoutTheme.colors.secondary,
+        borderWidth: 2,
     },
     brandImage: {
-        width: 100,
-        height: 100,
-        borderRadius: 10,
+        width: 44,
+        height: 44,
         resizeMode: "contain",
     },
     header: {
@@ -83,14 +77,15 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
     },
     title: {
         fontFamily: layoutTheme.fonts.inter.bold,
-        fontSize: 22,
+        fontSize: 18,
         color: theme === "dark" ? layoutTheme.colors.text.white : layoutTheme.colors.text.primary,
     },
     viewAllButton: {
 
     },
     viewAllButtonText: {
-        fontFamily: layoutTheme.fonts.inter.regular,
+        fontFamily: layoutTheme.fonts.inter.medium,
         color: layoutTheme.colors.text.secondary,
+        fontSize: 14,
     },
 });

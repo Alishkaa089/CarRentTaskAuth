@@ -13,15 +13,15 @@ export default function SignIn() {
         <SafeAreaView style={styles.container}>
 
 
-            {/* Title */}
+            
             <Text style={styles.title}>{`Let's Sign You In`}</Text>
 
-            {/* Welcome Message */}
+            
             <View style={styles.welcomeBox}>
                 <Text style={styles.welcomeText}>{`Welcome back, you've been missed!`}</Text>
             </View>
 
-            {/* Sign In Form */}
+            
             <SignInForm />
         </SafeAreaView>
     )

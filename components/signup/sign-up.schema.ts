@@ -15,9 +15,4 @@ export const signUpSchema = signInSchema.merge(z.object({
 
 export type SignUpSchema = z.infer<typeof signUpSchema>;
 
-// This is the old way of doing it, but "infer" is a better way to do it by zod library
-// export type SignInSchema = {
-//     email: string;
-//     password: string;
-//     rememberMe: boolean; // true || false
-// };
+

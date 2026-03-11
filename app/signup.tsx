@@ -14,15 +14,15 @@ export default function SignUp() {
         <SafeAreaView style={styles.container}>
 
 
-            {/* Title */}
+            
             <Text style={styles.title}>{`Getting Started`}</Text>
 
-            {/* Welcome Message */}
+            
             <View style={styles.welcomeBox}>
                 <Text style={styles.welcomeText}>Create an account to continue!</Text>
             </View>
 
-            {/* Sign In Form */}
+            
             <SignUpForm />
         </SafeAreaView>
     )

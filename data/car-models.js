@@ -1,5 +1,5 @@
 export const carModels = [
-    // Bentley Models
+    
     {
       "id": "bentley-continental-gt",
       "brand": "Bentley",
@@ -57,7 +57,7 @@ export const carModels = [
       "features": ["Convertible Top", "Premium Leather", "Bang & Olufsen Audio", "All-Wheel Drive"]
     },
   
-    // BMW Models
+    
     {
       "id": "bmw-3-series",
       "brand": "BMW",
@@ -115,7 +115,7 @@ export const carModels = [
       "features": ["Electric Drive", "Fast Charging", "Autopilot", "Premium Interior"]
     },
   
-    // BYD Models
+    
     {
       "id": "byd-seal",
       "brand": "BYD",
@@ -173,7 +173,7 @@ export const carModels = [
       "features": ["Compact Design", "City Friendly", "Modern Interior", "Efficient Battery"]
     },
   
-    // Chevrolet Models
+    
     {
       "id": "chevrolet-camaro",
       "brand": "Chevrolet",
@@ -231,7 +231,7 @@ export const carModels = [
       "features": ["Mid-Engine", "Track Package", "Carbon Fiber", "Launch Control"]
     },
   
-    // Ferrari Models
+    
     {
       "id": "ferrari-roma",
       "brand": "Ferrari",
@@ -289,7 +289,7 @@ export const carModels = [
       "features": ["V12 Engine", "800 HP", "Carbon Ceramic Brakes", "Luxury Interior"]
     },
   
-    // Ford Models
+    
     {
       "id": "ford-mustang",
       "brand": "Ford",
@@ -347,7 +347,7 @@ export const carModels = [
       "features": ["Removable Doors", "Off-Road Package", "Terrain Management", "Washable Interior"]
     },
   
-    // Lamborghini Models
+    
     {
       "id": "lamborghini-huracan",
       "brand": "Lamborghini",
@@ -405,7 +405,7 @@ export const carModels = [
       "features": ["Plug-in Hybrid", "1001 HP", "Electric Mode", "Next-Gen Design"]
     },
   
-    // Lexus Models
+    
     {
       "id": "lexus-es",
       "brand": "Lexus",
@@ -463,7 +463,7 @@ export const carModels = [
       "features": ["V8 Engine", "Sport Package", "Premium Sound", "Head-Up Display"]
     },
   
-    // Mazda Models
+    
     {
       "id": "mazda-cx5",
       "brand": "Mazda",
@@ -521,7 +521,7 @@ export const carModels = [
       "features": ["Premium Interior", "Turbo Option", "Apple CarPlay", "I-Activsense Safety"]
     },
   
-    // Mercedes-Benz Models
+    
     {
       "id": "mercedes-c-class",
       "brand": "Mercedes-Benz",
@@ -579,7 +579,7 @@ export const carModels = [
       "features": ["Executive Rear Seats", "Maybach Option", "Burmester 4D Audio", "Luxury Package"]
     },
   
-    // Mitsubishi Models
+    
     {
       "id": "mitsubishi-outlander",
       "brand": "Mitsubishi",
@@ -637,7 +637,7 @@ export const carModels = [
       "features": ["Turbo Engine", "All-Wheel Drive", "Sport Package", "Performance Suspension"]
     },
   
-    // Porsche Models
+    
     {
       "id": "porsche-911",
       "brand": "Porsche",

@@ -9,10 +9,16 @@ export default function TabsLayout() {
     const { colorScheme } = useTheme();
     const styles = getStyles(colorScheme);
     return (
-        <Tabs screenOptions={{ headerShown: false, tabBarStyle:  styles.tabBar}} >
+        <Tabs screenOptions={{ 
+            headerShown: false, 
+            tabBarStyle: styles.tabBar,
+            tabBarActiveTintColor: "#FFB800",
+            tabBarInactiveTintColor: "#888",
+            tabBarShowLabel: false,
+        }} >
             <Tabs.Screen name="index" options={{
                 title: "",
-                tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} />
+                tabBarIcon: ({ color, size }) => <Ionicons name="location" color={color} size={size} />
             }}
             />
             <Tabs.Screen name="favorite" 
@@ -39,6 +45,12 @@ export default function TabsLayout() {
                 href: null,
             }}
             />
+            <Tabs.Screen name="brand-list" 
+            options={{
+                title: "",
+                href: null,
+            }}
+            />
         </Tabs >
     )
 }
@@ -46,5 +58,9 @@ export default function TabsLayout() {
 const getStyles = (theme: ThemeType) => StyleSheet.create({
     tabBar: {
         backgroundColor: theme === "dark" ? layoutTheme.colors.primary : layoutTheme.colors.white,
+        borderTopWidth: 1,
+        borderTopColor: theme === "dark" ? "#333" : "#E5E5E5",
+        height: 60,
+        paddingTop: 10,
     }
 })
