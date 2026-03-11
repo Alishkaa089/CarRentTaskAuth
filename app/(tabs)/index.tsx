@@ -2,32 +2,40 @@ import BrandLogo from "@/components/screens/main/brand-logo";
 import CarBrands from "@/components/screens/main/car-brands";
 import { layoutTheme } from "@/constant/theme";
 import useTheme from "@/hooks/use-theme";
+import { useAppStore } from "@/store/use-app.store";
 import { ThemeType } from "@/types/theme.type";
-import { StatusBar, StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
+import { StatusBar, StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
 
 export default function Home() {
-    const { colorScheme } = useTheme()
-  
-
+    const { colorScheme } = useTheme();
     const styles = getStyles(colorScheme);
-    
+    const { searchQuery, setSearchQuery } = useAppStore();
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
             
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-                <Text style={styles.mainTitle}>Find your favourite{"\n"}vechicle.</Text>
+                <Text style={styles.mainTitle}>Find your favourite{"\n"}vehicle.</Text>
 
                 <View style={styles.searchContainer}>
                     <Ionicons name="search" size={20} color="#888" style={styles.searchIcon} />
                     <TextInput
-                        placeholder="Search vechicle"
+                        placeholder="Search vehicle"
                         placeholderTextColor="#888"
                         style={styles.searchInput}
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                        returnKeyType="search"
+                        clearButtonMode="while-editing"
                     />
+                    {searchQuery.length > 0 && (
+                        <TouchableOpacity onPress={() => setSearchQuery("")}>
+                            <Ionicons name="close-circle" size={20} color="#888" />
+                        </TouchableOpacity>
+                    )}
                 </View>
 
                 <BrandLogo />

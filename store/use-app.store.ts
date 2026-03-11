@@ -53,12 +53,18 @@ interface AppState {
     checkAvailability: (carId: string, startDate: string, endDate: string) => boolean;
     getCarBookings: (carId: string) => Booking[];
     getUserBookings: () => Booking[];
+
+    searchQuery: string;
+    setSearchQuery: (q: string) => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
     
     selectedCar: null,
     setSelectedCar: (car) => set({ selectedCar: car }),
+
+    searchQuery: "",
+    setSearchQuery: (q) => set({ searchQuery: q }),
 
     
     bookingDraft: {

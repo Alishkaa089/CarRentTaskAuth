@@ -7,6 +7,7 @@ import { Image } from "expo-image";
 import { router } from "expo-router";
 import { CarModel } from "@/types/car-model.types";
 import { useCarState } from "@/store/use-car.state";
+import { useAppStore } from "@/store/use-app.store";
 import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -14,59 +15,97 @@ export default function CarBrands() {
     const { colorScheme } = useTheme();
     const styles = getStyles(colorScheme);
     const { brand } = useCarState();
+    const { searchQuery } = useAppStore();
 
     const shuffleCars = (array: CarModel[]) => {
-        const shuffled = array.sort(() => Math.random() - 0.5)
-        return shuffled.slice(0, 6);
-    }
+        return [...array].sort(() => Math.random() - 0.5).slice(0, 6);
+    };
 
     const [cars, setCars] = useState(() => shuffleCars(carModels as CarModel[]));
 
     useEffect(() => {
-        setCars(shuffleCars)
-    }, [])
+        setCars(shuffleCars(carModels as CarModel[]));
+    }, []);
 
+    const getFilteredCars = () => {
+        let base: CarModel[] = carModels as CarModel[];
 
-    const getCarBySlug = () => {
         if (brand.length > 0) {
-            return carModels.filter((car) => car.brandSlug === brand[0]);
+            base = base.filter((car) => car.brandSlug === brand[0]);
         }
-        return cars
-    }
+
+        if (searchQuery.trim().length > 0) {
+            const q = searchQuery.toLowerCase().trim();
+            base = base.filter((car) => {
+                const fullName = `${car.brand} ${car.model}`.toLowerCase();
+                return (
+                    fullName.includes(q) ||
+                    car.brand.toLowerCase().includes(q) ||
+                    car.model.toLowerCase().includes(q) ||
+                    car.type.toLowerCase().includes(q) ||
+                    car.fuelType.toLowerCase().includes(q) ||
+                    car.transmission.toLowerCase().includes(q)
+                );
+            });
+        }
+
+        if (searchQuery.trim().length === 0 && brand.length === 0) {
+            return cars;
+        }
+
+        return base;
+    };
+
+    const filtered = getFilteredCars();
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title}>Available Near You</Text>
+                <Text style={styles.title}>
+                    {searchQuery.trim().length > 0
+                        ? `Results (${filtered.length})`
+                        : "Available Near You"}
+                </Text>
                 <TouchableOpacity onPress={() => router.push("/car-list")}>
                     <Text style={styles.viewAllButtonText}>See All</Text>
                 </TouchableOpacity>
             </View>
-            <FlatList
-                data={getCarBySlug()}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) =>
-                    <TouchableOpacity 
-                        style={styles.item}
-                        onPress={() => router.push(`/car-details/${item.id}`)}
-                    >
-                        <Image source={{ uri: item.image }} style={styles.brandImage} contentFit="cover" />
-                        <Text style={styles.brandName} numberOfLines={1}>white {item.brand} {item.model} - Elite State</Text>
-                        <View style={styles.modelInfo}>
-                            <View style={styles.ratingContainer}>
-                                <Ionicons name="star" size={14} color="#FFB800" />
-                                <Text style={styles.ratingText}>4.8</Text>
-                                <Text style={styles.reviewText}>[140+ Review]</Text>
+
+            {filtered.length === 0 ? (
+                <View style={styles.emptyContainer}>
+                    <Ionicons name="search-outline" size={48} color="#888" />
+                    <Text style={styles.emptyText}>No vehicles found for "{searchQuery}"</Text>
+                </View>
+            ) : (
+                <FlatList
+                    data={filtered}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) =>
+                        <TouchableOpacity
+                            style={styles.item}
+                            onPress={() => router.push(`/car-details/${item.id}`)}
+                        >
+                            <Image source={{ uri: item.image }} style={styles.brandImage} contentFit="cover" />
+                            <Text style={styles.brandName} numberOfLines={1}>{item.brand} {item.model}</Text>
+                            <View style={styles.modelInfo}>
+                                <View style={styles.ratingContainer}>
+                                    <Ionicons name="star" size={14} color="#FFB800" />
+                                    <Text style={styles.ratingText}>4.8</Text>
+                                    <Text style={styles.reviewText}>[140+ Review]</Text>
+                                </View>
+                                <Text style={styles.modelPrice}>${item.pricePerDay}<Text style={styles.dayText}> /day</Text></Text>
                             </View>
-                            <Text style={styles.modelPrice}>${item.pricePerDay}<Text style={styles.dayText}> /day</Text></Text>
-                        </View>
-                    </TouchableOpacity>}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.list}
-            />
+                        </TouchableOpacity>}
+                    horizontal={searchQuery.trim().length === 0 && brand.length === 0}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={searchQuery.trim().length > 0 ? styles.listVertical : styles.list}
+                    numColumns={searchQuery.trim().length > 0 ? 1 : 1}
+                    key={searchQuery.trim().length > 0 ? "vertical" : "horizontal"}
+                />
+            )}
         </View>
-    )
+    );
 }
 
 const getStyles = (theme: ThemeType) => StyleSheet.create({
@@ -143,5 +182,23 @@ const getStyles = (theme: ThemeType) => StyleSheet.create({
         fontFamily: layoutTheme.fonts.inter.medium,
         color: layoutTheme.colors.text.secondary,
         fontSize: 14,
+    },
+    emptyContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        paddingTop: 40,
+        paddingBottom: 20,
+        gap: 12,
+    },
+    emptyText: {
+        fontFamily: layoutTheme.fonts.inter.medium,
+        fontSize: 14,
+        color: "#888",
+        textAlign: "center",
+    },
+    listVertical: {
+        gap: 16,
+        paddingTop: 16,
+        paddingBottom: 20,
     },
 })
