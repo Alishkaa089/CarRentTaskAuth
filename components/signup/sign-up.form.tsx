@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { signUpSchema, SignUpSchema } from "./sign-up.schema";
 
 export default function SignUpForm() {
@@ -15,7 +15,7 @@ export default function SignUpForm() {
     const styles = getStyles(colorScheme);
     const [showPassword, setShowPassword] = useState(false);
 
-    const { control, handleSubmit, formState: { errors } } = useForm<SignUpSchema>({
+    const { control, handleSubmit, setError, formState: { errors } } = useForm<SignUpSchema>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
             name: "",
@@ -27,14 +27,23 @@ export default function SignUpForm() {
 
     const onSubmit = async (data: SignUpSchema) => {
         try {
-            await AsyncStorage.setItem("registeredUser", JSON.stringify(data));
+            const usersJson = await AsyncStorage.getItem("users");
+            const users = usersJson ? JSON.parse(usersJson) : [];
 
-            await AsyncStorage.setItem("isAuthenticated", "true");
-            await AsyncStorage.setItem("user", JSON.stringify(data));
+            const userExists = users.some((u: any) => u.email === data.email);
+            if (userExists) {
+                setError("email", { type: "manual", message: "Bu email artıq istifadədədir" });
+                return;
+            }
 
-            router.push("/(tabs)");
+            users.push(data);
+            await AsyncStorage.setItem("users", JSON.stringify(users));
+
+            Alert.alert("Success", "Account created successfully. Please sign in.");
+            router.replace("/signin");
         } catch (error) {
             console.error(error);
+            Alert.alert("Error", "An unexpected error occurred.");
         }
     }
 

@@ -16,7 +16,7 @@ export default function Profile() {
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("isAuthenticated");
-    router.replace("/");
+    router.replace("/signin");
   }
 
   return (

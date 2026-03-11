@@ -26,18 +26,21 @@ export default function SignInForm() {
 
     const onSubmit = async (data: SignInSchema) => {
         try {
-            const registeredUserJson = await AsyncStorage.getItem("registeredUser");
-            const registeredUser = registeredUserJson ? JSON.parse(registeredUserJson) : null;
+            const usersJson = await AsyncStorage.getItem("users");
+            const users = usersJson ? JSON.parse(usersJson) : [];
 
-            if (registeredUser && registeredUser.email === data.email && registeredUser.password === data.password) {
+            const userMatch = users.find((u: any) => u.email === data.email && u.password === data.password);
+
+            if (userMatch) {
                 await AsyncStorage.setItem("isAuthenticated", "true");
-                await AsyncStorage.setItem("user", JSON.stringify(registeredUser));
+                await AsyncStorage.setItem("user", JSON.stringify(userMatch));
                 router.push("/(tabs)");
             } else {
                 Alert.alert("Error", "Invalid email or password");
             }
         } catch (error) {
             console.error(error);
+            Alert.alert("Error", "An unexpected error occurred.");
         }
     }
 
